@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:my_libros/models/user.dart';
+import 'package:my_libros/pages/login_page.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class RegisterPage extends StatefulWidget {
@@ -47,20 +51,42 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void _showMsg(String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        action: SnackBarAction(
+            label: 'Aceptar', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
+  void saveUser(User user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user', jsonEncode(user));
+  }
+
   void _onRegisterButtonClicked() {
     setState(() {
-      String genre = 'Masculino';
-      if (_genre == Genre.femenino) {
-        genre = 'Femenino';
-      }
-      String favoritos = '';
-      if (_aventura) favoritos = '$favoritos Aventura';
-      if (_fantasia) favoritos = '$favoritos Fantasia';
-      if (_terror) favoritos = '$favoritos Terror';
+      if (_password.text == _repPassword.text) {
+        String genre = 'Masculino';
+        String favoritos = '';
 
-      _data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email
-          .text} \nGenero: $genre \n'
-          'Genero favorito: $favoritos \nFecha de nacimiento: $_date';
+        if (_genre == Genre.femenino) {
+          genre = 'Femenino';
+        }
+
+        if (_aventura) favoritos = '$favoritos Aventura';
+        if (_fantasia) favoritos = '$favoritos Fantasia';
+        if (_terror) favoritos = '$favoritos Terror';
+        var user = User(
+            _name.text, _email.text, _password.text, genre, favoritos, _date);
+        saveUser(user);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        _showMsg("Las contraseñas deben de ser iguales");
+      }
     });
   }
 
@@ -192,12 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       child: const Text('Registrarme'),
                     ),
-                    Text(
-                        _data,
-                        style: const TextStyle(
-                            fontSize: 12, fontStyle: FontStyle.italic
-                        )
-                    )
+
                   ],
                 ),
               )
