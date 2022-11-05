@@ -165,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   _genre = value;
                                 });
                               }),
-                        ),
+                         ),
                         ),
                       ],
                     ),

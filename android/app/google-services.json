@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "846544783909",
+    "project_id": "my-libros",
+    "storage_bucket": "my-libros.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846544783909:android:9bf033ecbe62b9c5554dcc",
+        "android_client_info": {
+          "package_name": "com.roly.my_libros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846544783909-07sdbsrlk0dt7eeg9548et0jnrsmv02j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTlDc1usJtbTPSxWsvsjNCjtXqgioCb1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846544783909-07sdbsrlk0dt7eeg9548et0jnrsmv02j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "846544783909-bpd616hfg16svj35gl40618clkmc4jhs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.roly.myLibros"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,11 +21,15 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const <Widget>[
+              const Image(
+                image: AssetImage('assets/images/logotype.png'),
+              ),
               const SizedBox(
-                height: 150.0,
+                height: 16,
               ),
               Text('Pais : Colombia \nDepartamento: Magdalena \nCiudad: Santa Marta'
-                  '\nTemperatura: 30 °C \nLa sierra nevada es un sitio turistico especial para el senderismo, '
+                  '\nTemperatura: 30 °C'
+              '\n\n\nLa sierra nevada es un sitio turistico especial para el senderismo, '
                   'avistamiento de aves y en general disfrutar de la naturaleza '),
               const SizedBox(
                 height: 50.0,
