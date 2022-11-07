@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_libros/pages/my_books_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:my_libros/pages/login_page.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashPage(),
+      home: const MyBooksPage(),
     );
   }
 }

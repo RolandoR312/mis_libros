@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:my_libros/models/user.dart';
 import 'package:my_libros/pages/login_page.dart';
+import 'package:my_libros/repository/firebase_api.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,8 @@ class RegisterPage extends StatefulWidget {
 enum Genre { masculino, femenino }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -61,11 +64,32 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
-  void saveUser(User user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('user', jsonEncode(user));
+  void _saveUser(User user) async {
+    var result = await _firebaseApi.createUser(user);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
+
+  void _registerUser(User user) async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    //prefs.setString('user', jsonEncode(user));
+    var result = await _firebaseApi.registerUser(user.email, user.password);
+    String msg = "";
+    if (result == "invalid-email") {
+      msg = "El correo electónico está mal escrito";
+    }   else if (result == "weak-password") {
+      msg = "La contrasena debe tener minimo 6 digitos";
+    }   else if (result == "email-already-in-use") {
+      msg = "Ya existe una cuenta con ese correo electronico";
+    }   else if (result == "network-request-failed") {
+      msg = "Revise su conexion a internet";
+    }   else {
+      msg = "Usuario registrado con exito";
+      user.uid = result;
+      _saveUser(user);
+    }
+    _showMsg(msg);
+   }
 
   void _onRegisterButtonClicked() {
     setState(() {
@@ -81,9 +105,9 @@ class _RegisterPageState extends State<RegisterPage> {
         if (_fantasia) favoritos = '$favoritos Fantasia';
         if (_terror) favoritos = '$favoritos Terror';
         var user = User(
-            _name.text, _email.text, _password.text, genre, favoritos, _date);
-        saveUser(user);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+            "", _name.text, _email.text, _password.text, genre, favoritos, _date);
+        _registerUser(user);
+        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
       } else {
         _showMsg("Las contraseñas deben de ser iguales");
       }
